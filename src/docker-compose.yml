@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+
+  nosqldata:
+    container_name: 'mongo'
+    image: mongo
+    ports:
+      - '27017:80'
+
+  catalog.api:
+    container_name: 'catalog-api'
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+    depends_on:
+      - nosqldata    
+        
