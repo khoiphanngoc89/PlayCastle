@@ -1,5 +1,6 @@
 using MongoDB.Driver;
 using Common.SharedKernel.DatabaseProvider;
+using Serilog;
 
 namespace Catalog.API.Repositories
 {
@@ -32,6 +33,7 @@ namespace Catalog.API.Repositories
         {
             if (entity == null)
             {
+                Log.Error("The entity is null");
                 throw new ArgumentNullException(nameof(entity));
             }
 
@@ -42,6 +44,7 @@ namespace Catalog.API.Repositories
         {
             if (entity == null)
             {
+                Log.Error("The entity is null");
                 throw new ArgumentNullException(nameof(entity));
             }
 

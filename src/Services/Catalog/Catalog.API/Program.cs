@@ -1,10 +1,17 @@
 using Catalog.API.Config;
 using Catalog.API.Entities;
+using Catalog.API.Middlewares;
 using Common.SharedKernel.Serilog;
 using Common.SharedKernel.Settings;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var serilogSettings = builder.Configuration.GetSection(nameof(SerilogSettings)).Get<SerilogSettings>();
+
+builder.Host.UseSerilog((ctx, lc) =>
+        SerilogConfig.Initialize(ctx, lc, serilogSettings));
+    
 // Add services to the container.
 builder.Services.AddControllers(options =>
 {
@@ -19,9 +26,7 @@ builder.Services.AddSwaggerGen();
 // Inject another services
 var serviceSettings = builder.Configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
 var mongoDbSettings = builder.Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-var serilogSettings = builder.Configuration.GetSection(nameof(SerilogSettings)).Get<SerilogSettings>();
 
-builder.Services.AddSerilog(serilogSettings);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddMongoDb(mongoDbSettings, serviceSettings).AddRepository<Item>(mongoDbSettings);
 
@@ -34,6 +39,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<CustomExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
