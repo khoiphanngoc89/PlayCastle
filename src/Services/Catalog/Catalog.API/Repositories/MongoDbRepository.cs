@@ -8,7 +8,6 @@ namespace Catalog.API.Repositories
     public class MongoDbRepository<T> : IRepository<T>
         where T : IEntity
     {
-
         private readonly IMongoCollection<T> _dbCollection;
 
         private readonly FilterDefinitionBuilder<T> filterBuilder = Builders<T>.Filter;

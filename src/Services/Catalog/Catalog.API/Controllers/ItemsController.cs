@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Catalog.API.Entities;
 using Catalog.API.Models;
 using Common.SharedKernel.DatabaseProvider;
-using Serilog;
+using Common.SharedKernel.Constants;
 
 namespace Catalog.API.Controllers
 {
     // https://localhost:7242/api/items
     [ApiController]
-    [Route("api/items")]
+    [Route(Const.ItemRoute)]
     public class ItemsController : ControllerBase
     {
         private readonly IMapper _mapper;
